@@ -1,4 +1,4 @@
-# Orinoco Furniture. LLC #
+# Orinoco Furniture, LLC #
 
 This is the Project 5 eCommerce site for the Junior Web Developer path.
 
