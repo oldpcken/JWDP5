@@ -15,6 +15,13 @@ const url = "http://localhost:3000/api/furniture/";   // create the URL string
 
 let cartStr = localStorage.getItem('cart') || '[]'; 
 let cartArray = JSON.parse(cartStr);
+// current product intialize
+const currentProduct = {
+  imgUrl: '',
+  name: '',
+  varnish: '',
+  unitPrice: ''
+}
 
 // Retieve the product ID > call the single product ID if one exists
 // Get one product data from the database from passed query selector
@@ -22,25 +29,24 @@ let cartArray = JSON.parse(cartStr);
 let url1 = window.location.href;
 let newUrl = new URL(url1);
 let id = newUrl.searchParams.get('id');
-// if (id != '') {
-//     console.log(id);
-// }
 
 // Use that to get the product data
 // Turn the response into a JS object
 
 function retrieveProduct() {
+
     return new Promise((resolve, reject) => {
       
       productRequest.open('GET', url + id);             // open a GET api
-      //console.log(url);
+      
       productRequest.onreadystatechange = () => {
+
         if (productRequest.readyState === 4) {
-          //console.log(productRequest.readyState);
           
           if (productRequest.status === 200 || productRequest.status === 201) {
+
               resolve(JSON.parse(productRequest.response));    // retrieve the response if successful
-              // console.log(productRequest.response);
+              
           } else {
               reject(JSON.parse(productRequest.response));
           }
@@ -95,11 +101,9 @@ function createCard(cardObj) {
     name.classList.add('text-center');
     name.innerText = cardObj.name;
     label.innerHTML = "Choice of Varnish:";
-    cart.setAttribute('display', 'inline');
-
-    cart.addEventListener('click', (e) => {
-      // addToCart(currentProduct);
-      addToCart(e);
+    
+    cart.addEventListener('click', () => {
+      addToCart(currentProduct);
     });
 
     main.appendChild(card);
@@ -109,54 +113,76 @@ function createCard(cardObj) {
     card.appendChild(price);
     card.appendChild(label);
     card.appendChild(createPulldown(cardObj.varnish));
-    console.log(cardObj.varnish);
     card.appendChild(cart);
 
-};
+    currentProduct.imgUrl = cardObj.imageUrl;
+    currentProduct.name = cardObj.name;
+    currentProduct.unitPrice = cardObj.price;
+    
+    // console.log(currentProduct);
+  
+  };
 
 // Create function to build pulldown menu for customization,
 
 function createPulldown(array) {
   const pulldown = document.createElement('select');
   const length = array.length;
-  // console.log(length);
-  
-  for(let i=0; i<length; i++) {
+    
+  for(let i = 0; i < length; i++) {
     const option = document.createElement('option');
     option.setAttribute('value', array[i]);
-    // console.log(array[i]);
+    if (i === 0) {
+     currentProduct.varnish = array[i];
+    //  console.log('current', currentProduct);
+    }
     option.innerText = array[i];
-    
+ 
     pulldown.appendChild(option);
   }
+
+  // Add event listener for varnish choice change
+
+  pulldown.addEventListener( 'change', (ev) => {
+    // console.log(ev.target.value);
+    currentProduct.varnish = ev.target.value;
+    // console.log(currentProduct);
+  });   
+
   return pulldown;
 }
 
-// add to local storage as a string  |  JSON.stringify
-// Add an event listener for the add to cart button
-
-// Add product data to local storage in an array
-
+// Add event listener for "add to cart" button
+  
+// Add product data to local storage in an array, add check for dupes
 // localStorage.setItem(one object); -->NO cycle through retrieved objects
 
-// Add event listener for "add to cart" button, add check for dupes
+// add to local storage as a string  |  JSON.stringify
 // keep localstorage cart synced to cart array on page
 
-function addToCart(e) {
-  console.log(e);
+function addToCart() {
+  // console.log(e);
   //get a product object
-
-  let currentProduct = document.getElementById('  ')
-  // let currentImage = document.getElementsByName('img');
-  // let currentName = document.getElementsByName('name');
-  // let currentPrice = document.getElementsByName('price');
-  //Create an array entry if not existing in local storage
+  // const imgUrl = cardObj.imageUrl;
   
-  localStorage.setItem(JSON.stringify(currentProduct));
+  //Create an array entry if not existing in local storage
+  // JSON.parse(localStorage.getItem('products[]') || "[]");
 
-  // localStorage.setItem(JSON.stringify(currentName));
-  // localStorage.setItem(JSON.stringify(currentPrice));
-
+    if (cartArray === []) {
+      console.log('cart before push', cartArray);
+      cartArray.push(currentProduct);
+      localStorage.setItem('cart', JSON.stringify(cartArray));
+      return;
+    } else {
+      console.log('on the else')
+      //temp code
+      cartArray.push(currentProduct);
+      localStorage.setItem('cart', JSON.stringify(cartArray));
+      //localStorage.clear();
+      console.log(localStorage.length);
+    }
+    
+  console.log('cartarry', cartArray);
 
   //Call an updateCart() fuction
   //let addToCart = document.getElementById('addToCart');
@@ -166,4 +192,6 @@ function addToCart(e) {
 // function updateCart() {
     //
 //}
+
+
 
