@@ -14,30 +14,37 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    	    
+
+        	    
   </head>
 
   <body>
     
     <div class="container">
 
-      <nav class = "navbar nav-dark navbar-expand-lg row">
+      <nav class = "navbar nav-dark navbar-expand-lg row d-flex justify-content-between">
         <img src="images/Orinoco Logo-small.png" alt="Orinoco Furniture Logo" height = 50>
-        <button class = "navbar-brand btn btn-lg" type = 'button' href = "index.html">Shop</button>
-        <button class = "navbar-brand btn btn-lg" type = 'button' href = "shoppingcart.html">Shopping Cart</button>
+        <div class= "d-inline-flex">
+          <a class = "navbar-brand btn btn-lg" href = "index.html">
+            <i class="fas fa-home"></i>
+          </a>
+          <a class = "navbar-brand btn btn-lg" href = "shoppingcart.html">
+            <i class="fas fa-shopping-cart"></i>
+          </a>
+        </div>
       </nav>
-  
+         
       <header class="jumbotron-fluid bg-light text-center">
                
         <h1 class="m-2 p-2 mt-4">Orinoco Furniture, LLC</h1>
                
       </header>
+    
+      <main>
+        <div class="row d-flex" id="products">
   
-      <!-- <main> -->
-      <div class="row" id="products">
-  
-      </div>
-      <!-- </main> -->
+        </div>
+      </main>
   
       <footer class = "row bg-info p-2">
         <span class = "col ml-2">&#169 2021 Orinoco Furniture, LLC</span>
@@ -46,6 +53,7 @@
       
     </div>
 
+    <script src="https://kit.fontawesome.com/fdf64e2bef.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>

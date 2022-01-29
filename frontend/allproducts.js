@@ -39,6 +39,8 @@ function retrieveProducts() {
           //console.log(objArray[i]);
           createCard(objArray[i]);
         }
+        // create cart number items
+        updateCartItems();
       }
     };
     productRequest.send();
@@ -60,11 +62,14 @@ function createCard(cardObj) {
   const name = document.createElement('h2');
   const btn = document.createElement('a');
 
+  main.classList.add("d-flex", "flex-wrap");
   card.classList.add("card");
   card.classList.add("col-4");
+  card.classList.add("d-inline-flex");
   image.classList.add("card-img-top");
   image.setAttribute("src", cardObj.imageUrl);
   image.setAttribute("alt", 'furniture image');
+  // btn.classList.add("d-inline-flex");
   btn.classList.add("btn");
   btn.classList.add("btn-primary");
   btn.classList.add("btn-lg");
@@ -99,4 +104,11 @@ function createCard(cardObj) {
 // generateButton.addEventListener('click', () => {
 //     productDetails();
 // });
-
+function updateCartItems() {
+  const num = 0;
+  let qty = 0;
+  const storage = JSON.parse(localStorage.getItem('cart'));
+  
+  // use ES6 to get quantity from storage
+  num = storage.reduce((a,b) => ({qty:a.qty + b.qty}));
+}

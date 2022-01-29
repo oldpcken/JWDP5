@@ -160,24 +160,25 @@ function createPulldown(array) {
 // add to local storage as a string  |  JSON.stringify
 // keep localstorage cart synced to cart array on page
 
-function addToCart() {
+function addToCart(item) {
   // console.log(e);
   //get a product object
   // const imgUrl = cardObj.imageUrl;
   
   //Create an array entry if not existing in local storage
   // JSON.parse(localStorage.getItem('products[]') || "[]");
-
+    let doPush = false;
     if (cartArray === []) {
       console.log('cart before push', cartArray);
-      cartArray.push(currentProduct);
+      cartArray.push(item);
       localStorage.setItem('cart', JSON.stringify(cartArray));
-      return;
+      //return;
     } else {
       console.log('on the else')
       //temp code
-      cartArray.push(currentProduct);
+      cartArray.push(item);
       localStorage.setItem('cart', JSON.stringify(cartArray));
+      cartArray = JSON.parse(localStorage.getItem("cart"));
       //localStorage.clear();
       console.log(localStorage.length);
     }
