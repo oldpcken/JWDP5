@@ -1,4 +1,23 @@
 /* css styles go here */
+.navbar {
+    background-color: rgb(242, 235, 247);
+}
+
+.fas {
+    font-size: 35px;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: linear-gradient(to right, rgba(255, 166, 0, 0.885), rgb(121, 44, 197));
+}
+
+/* .d-flex {
+    justify-content: space-between;
+} */
+/* .fas {
+    color: rgb(121, 44, 197);
+} */
+
 .test {
     outline: 10px solid blue;
     margin-left: 50px;

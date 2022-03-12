@@ -17,10 +17,12 @@ let cartStr = localStorage.getItem('cart') || '[]';
 let cartArray = JSON.parse(cartStr);
 // current product intialize
 const currentProduct = {
+  id: '',
   imgUrl: '',
   name: '',
   varnish: '',
-  unitPrice: ''
+  unitPrice: '',
+  qty: '1'
 }
 
 // Retieve the product ID > call the single product ID if one exists
@@ -115,9 +117,11 @@ function createCard(cardObj) {
     card.appendChild(createPulldown(cardObj.varnish));
     card.appendChild(cart);
 
+    currentProduct.id = cardObj._id;
     currentProduct.imgUrl = cardObj.imageUrl;
     currentProduct.name = cardObj.name;
     currentProduct.unitPrice = cardObj.price;
+    currentProduct.qty = 1;
     
     // console.log(currentProduct);
   
@@ -172,18 +176,17 @@ function addToCart(item) {
       console.log('cart before push', cartArray);
       cartArray.push(item);
       localStorage.setItem('cart', JSON.stringify(cartArray));
-      //return;
-    } else {
+      } else {
       console.log('on the else')
       //temp code
       cartArray.push(item);
       localStorage.setItem('cart', JSON.stringify(cartArray));
       cartArray = JSON.parse(localStorage.getItem("cart"));
-      //localStorage.clear();
+      // localStorage.clear();
       console.log(localStorage.length);
     }
     
-  console.log('cartarry', cartArray);
+  console.log('Cartarray', cartArray);
 
   //Call an updateCart() fuction
   //let addToCart = document.getElementById('addToCart');
