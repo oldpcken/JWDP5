@@ -15,14 +15,15 @@ const url = "http://localhost:3000/api/furniture/";   // create the URL string
 
 let cartStr = localStorage.getItem('cart') || '[]'; 
 let cartArray = JSON.parse(cartStr);
-// current product intialize
+
+// Current product intialize
 const currentProduct = {
   id: '',
   imgUrl: '',
   name: '',
   varnish: '',
   unitPrice: '',
-  qty: '1'
+  qty: 1
 }
 
 // Retieve the product ID > call the single product ID if one exists
@@ -32,11 +33,9 @@ let url1 = window.location.href;
 let newUrl = new URL(url1);
 let id = newUrl.searchParams.get('id');
 
-// Use that to get the product data
-// Turn the response into a JS object
+// function used that to retrieve the product data & turn the response into a JS object
 
 function retrieveProduct() {
-
     return new Promise((resolve, reject) => {
       
       productRequest.open('GET', url + id);             // open a GET api
@@ -53,11 +52,9 @@ function retrieveProduct() {
               reject(JSON.parse(productRequest.response));
           }
           const objArray = JSON.parse(productRequest.response); 
-                             
-          createCard(objArray);
-          
-        }
-        
+                           
+          createCard(objArray);          
+        };
       };
       productRequest.send();
     });
@@ -66,11 +63,11 @@ function retrieveProduct() {
 
 retrieveProduct();
 
-// Create the product cards / page layout
+// Function to create the product cards / page layout
 // Add picture, title, description, price, pulldown customize menu, & add to cart button
-// Create function to build the card that programmatically build and append cards to the DOM
 
 function createCard(cardObj) {
+    console.log(cardObj);
     const main = document.getElementById('product');
     const card = document.createElement('div');
     const image = document.createElement('img'); 
@@ -121,13 +118,12 @@ function createCard(cardObj) {
     currentProduct.imgUrl = cardObj.imageUrl;
     currentProduct.name = cardObj.name;
     currentProduct.unitPrice = cardObj.price;
-    currentProduct.qty = 1;
-    
-    // console.log(currentProduct);
-  
+    // currentProduct.qty = cardObj.qty;
+    // console.log
+     
   };
 
-// Create function to build pulldown menu for customization,
+// Function to build pulldown menu for customization,
 
 function createPulldown(array) {
   const pulldown = document.createElement('select');
@@ -138,64 +134,58 @@ function createPulldown(array) {
     option.setAttribute('value', array[i]);
     if (i === 0) {
      currentProduct.varnish = array[i];
-    //  console.log('current', currentProduct);
     }
     option.innerText = array[i];
  
     pulldown.appendChild(option);
   }
 
-  // Add event listener for varnish choice change
+  // Event listener for varnish choice change
 
   pulldown.addEventListener( 'change', (ev) => {
-    // console.log(ev.target.value);
     currentProduct.varnish = ev.target.value;
-    // console.log(currentProduct);
   });   
 
   return pulldown;
 }
 
-// Add event listener for "add to cart" button
-  
-// Add product data to local storage in an array, add check for dupes
 // localStorage.setItem(one object); -->NO cycle through retrieved objects
-
-// add to local storage as a string  |  JSON.stringify
 // keep localstorage cart synced to cart array on page
+// localStorage.clear();
+
+// Add product data to local storage in an array, Check for dupes
 
 function addToCart(item) {
-  // console.log(e);
-  //get a product object
-  // const imgUrl = cardObj.imageUrl;
   
-  //Create an array entry if not existing in local storage
-  // JSON.parse(localStorage.getItem('products[]') || "[]");
-    let doPush = false;
-    if (cartArray === []) {
-      console.log('cart before push', cartArray);
-      cartArray.push(item);
-      localStorage.setItem('cart', JSON.stringify(cartArray));
-      } else {
-      console.log('on the else')
-      //temp code
-      cartArray.push(item);
-      localStorage.setItem('cart', JSON.stringify(cartArray));
-      cartArray = JSON.parse(localStorage.getItem("cart"));
-      // localStorage.clear();
-      console.log(localStorage.length);
-    }
+  let doPush = true;
+  
+  for (let i = 0; i < cartArray.length; i++) {
+            
+    if (currentProduct.id === cartArray[i].id &&
+      currentProduct.varnish === cartArray[i].varnish) {
+      doPush = false;      
+    };
+
+  };
     
-  console.log('Cartarray', cartArray);
+  if (doPush) {  
+    cartArray.push(currentProduct);
+    localStorage.setItem('cart', JSON.stringify(cartArray));
+    cartArray = JSON.parse(localStorage.getItem('cart'));
+    alert('Product added to shopping cart!');
+  } else {
+    alert('Product already exists in shopping cart!');
+      
+  };
+  
+};  
+//end of add to cart function
+
+  // console.log('Cartarray', cartArray);
 
   //Call an updateCart() fuction
   //let addToCart = document.getElementById('addToCart');
     
-}
-
 // function updateCart() {
     //
 //}
-
-
-

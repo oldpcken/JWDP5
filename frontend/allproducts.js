@@ -39,6 +39,7 @@ function retrieveProducts() {
           //console.log(objArray[i]);
           createCard(objArray[i]);
         }
+        updateQty();
         // create cart number items
         // updateCartItems();
       }
@@ -112,3 +113,8 @@ function createCard(cardObj) {
   // use ES6 to get quantity from storage
   // num = storage.reduce((a,b) => ({qty:a.qty + b.qty}));
 // }
+
+function updateQty() {
+  const cartIcon = document.querySelector('.fa-shopping-cart');
+  cartIcon.setAttribute('value', '600')
+}
