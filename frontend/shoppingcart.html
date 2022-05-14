@@ -22,7 +22,7 @@
     <div class="container">
 
       <nav class = "navbar nav-dark navbar-expand-lg row d-flex justify-content-between">
-        <img src="images/Orinoco_Logo-small.png" alt="Orinoco Furniture Logo" height = 50>
+        <img src="images/Orinoco_Logo-small.png" alt="Orinoco Furniture Logo" height=50>
         <div class= "d-inline-flex">
           <a class = "navbar-brand btn btn-lg" href = "index.html">
             <i class="fas fa-home"></i>
@@ -40,35 +40,53 @@
       </header>
   
      <!-- <main> -->
-      <div class="flex-column" id="shoppingcart">
+      <div class="flex-column p-3" id="shoppingcart">
     
       </div>
       <!-- </main> -->
-      <!-- // Create a form for the name and mailing address info (all fields are required)
-          // add data validation to the form -move to html
-          // add more divs to compact the form
-      -->
+
+      <section class="grandtotal">
+        <h5>Grand Total: <span id="grandtotal">
+          
+        </span></h5>
+        
+      </section>
+      <!-- // Create a form for the name and mailing address info (all fields are required)  -->
       <form class="form-group">
-        <label for="firstName">First name:</label>
-        <input class="form-control" type="text" name="fname" id="firstName" required>
-        <label for="lastName">Last name:</label>
-        <input class="form-control" type="text" name="lname" id="lastName" required>
+        <div class="d-flex my-2 justify-content-between">
+          <span>
+            <label for="firstName">First Name:</label>
+            <input class="form-control" type="text" name="fname" id="firstName" minlength="2" required>
+          </span>
+          <span>
+            <label for="lastName">Last Name:</label>
+            <input class="form-control" type="text" name="lname" id="lastName" minlength="3" required>
+          </span>
+        </div>
         <label for="address">Address:</label>
         <input class="form-control" type="text" name="addr" id="address" required>
-        <label for="city">City:</label>
-        <input class="form-control" type="text" id="city" name="city" required>
-        <label for="state">State:</label>
-        <input class="form-control" type="text" name="state" size="2" maxlength="2" id="state" required>
-        <label for="zipcode">Zip:</label>
-        <input class="form-control" type="text" name="zip" size="5" maxlength="5" id="zipcode" required>
+        <div class="d-flex my-2 justify-content-between">
+          <span>
+            <label for="city">City:</label>
+            <input class="form-control mx-0" type="text" id="city" name="city" required>
+          </span>
+          <spav>
+            <label for="state">State:</label>
+            <input class="form-control mr-3" type="text" name="state" size="2" maxlength="2" minlength="2" id="state" required>
+          </spav>
+          <span>
+            <label for="zipcode">Zip:</label>
+            <input class="form-control my-2" type="text" name="zip" size="5" maxlength="5" minlength="5" id="zipcode" pattern="[0-9]*" required>
+          </span>
+        </div>
         <label for="email">Email:</label>
         <input class="form-control" type="email" name="email" id="email" required>
 
-        <input type="submit" value="Submit Order">
+        <input type="submit" value="Submit Order" id="order">
       </form>
 
       <footer class = "row bg-info p-2">
-        <span class = "col ml-2">&#169; 2021 Orinoco Furniture, LLC</span>
+        <span class = "col ml-2">&#169; 2021-2022 Orinoco Furniture, LLC</span>
         <a class = "mr-2 text-dark" href = "#">About Us</a>
       </footer> 
       
