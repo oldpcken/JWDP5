@@ -1,5 +1,8 @@
 // Get the product data passed from the all products page
 
+// Get the shopping cart totals from local storage
+updateCartQty();
+
 // Objects in array arrainged like this...
 // const productObj = [
 //     'varnish[]',
@@ -170,17 +173,23 @@ function addToCart(item) {
     
   if (doPush) {  
     cartArray.push(currentProduct);
-    localStorage.setItem('cart', JSON.stringify(cartArray));
-    cartArray = JSON.parse(localStorage.getItem('cart'));
+    syncCart();
     alert('Product added to shopping cart!');
+    
+    updateCartQty();
   } else {
-    alert('Product already exists in shopping cart!');
-      
+    alert('Product already exists in shopping cart! If you want another of this item, you can increase the quantity when you go to the shopping cart.');
   };
   
 };  
 //end of add to cart function
 
+//--------------------------------------------------
+// Sync up the cart array and local storage function
+function syncCart() {
+  localStorage.setItem('cart', JSON.stringify(cartArray)); 
+  cartArray = JSON.parse(localStorage.getItem('cart'));
+}
   // console.log('Cartarray', cartArray);
 
   //Call an updateCart() fuction
@@ -189,3 +198,33 @@ function addToCart(item) {
 // function updateCart() {
     //
 //}
+
+//--------------------------------------------
+// Update Cart Quantity function
+
+function updateCartQty() {
+
+  // Initialize quantity in local storage
+  let totalQty = 0
+
+  //this will calculate the # of items appearing in the cart
+  console.log('The Update Cart Quantity Function is Engaged!')
+
+  const cartIcon = document.getElementsByClassName("cart-qty")[0];
+  const storage = JSON.parse(localStorage.getItem('cart'));
+
+  if (storage === []) {
+      totalQty = 0;
+      
+  } else {
+      for (let i=0; i<storage.length; i++) {
+        totalQty = totalQty + parseInt(storage[i].qty)
+      }
+  }
+
+  localStorage.setItem('qty', JSON.stringify(totalQty));
+  cartIcon.innerText = totalQty;
+  
+  console.log(totalQty);
+
+}

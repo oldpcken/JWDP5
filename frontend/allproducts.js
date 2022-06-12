@@ -1,4 +1,8 @@
-//  pseudo code for all products
+//  All products page display
+
+
+// Get the shopping cart totals from local storage
+updateCartQty();
 
 // Objects in array arrainged like this...
 // const productObj = [
@@ -32,16 +36,11 @@ function retrieveProducts() {
         }
         const objArray = JSON.parse(productRequest.response); 
         // loop thru responses to create an array of objects
-        // turn the JSON into a JS array of opjects
-        
+                
         for (let i = 0; i < objArray.length; i++) {
-          //console.log(objArray.length);
           //console.log(objArray[i]);
           createCard(objArray[i]);
-        }
-        updateQty();
-        // create cart number items
-        // updateCartItems();
+        }       
       }
     };
     productRequest.send();
@@ -51,10 +50,9 @@ function retrieveProducts() {
 
 retrieveProducts();
 
-// Create the product cards / page layout
+//---------------------------------------------
+// Create the product cards / page layout function
 // Cards will have pic, name, & button to go to single product page
-
-// build functions that iterate over that data (for loops) to programmatically build and append cards to the DOM
 
 function createCard(cardObj) {
   const main = document.getElementById('products');
@@ -70,7 +68,6 @@ function createCard(cardObj) {
   image.classList.add("card-img-top");
   image.setAttribute("src", cardObj.imageUrl);
   image.setAttribute("alt", 'furniture image');
-  // btn.classList.add("d-inline-flex");
   btn.classList.add("btn");
   btn.classList.add("btn-primary");
   btn.classList.add("btn-lg");
@@ -80,41 +77,39 @@ function createCard(cardObj) {
   name.classList.add('text-center');
   name.innerText = cardObj.name;
     
-  //console.log(card);
-  //console.log(name.innerHtml);
-  //console.log(image);
-  //console.log(btn);
-
   main.appendChild(card);
   card.appendChild(image);
   card.appendChild(name);
   card.appendChild(btn);
 
-// // each link has the _id of a product attached to it as a query parameter
-//
 };
 
-// the request returns a response
+//--------------------------------------------
+// Update Cart Quantity function
 
-// use JSON.parse to convert response into array
+function updateCartQty() {
 
-// create loop to update the html
+  // Initialize quantity in local storage
+  let totalQty = 0
 
-// Add event listener for the buttons
-// create a link for the single product page, E.G. singleproduct.html?id=${product._id}
-// generateButton.addEventListener('click', () => {
-//     productDetails();
-// });
-// function updateCartItems() {
-//   const num = 0;
-//   let qty = 0;
-//   const storage = JSON.parse(localStorage.getItem('cart'));
+  //this will calculate the # of items appearing in the cart
+  console.log('The Update Cart Quantity Function is Engaged!')
+
+  const cartIcon = document.getElementsByClassName("cart-qty")[0];
+  const storage = JSON.parse(localStorage.getItem('cart'));
+
+  if (storage === []) {
+      totalQty = 0;
+      
+  } else {
+      for (let i=0; i<storage.length; i++) {
+        totalQty = totalQty + parseInt(storage[i].qty)
+      }
+  }
+
+  localStorage.setItem('qty', JSON.stringify(totalQty));
+  cartIcon.innerText = totalQty;
   
-  // use ES6 to get quantity from storage
-  // num = storage.reduce((a,b) => ({qty:a.qty + b.qty}));
-// }
+  console.log(totalQty);
 
-function updateQty() {
-  const cartIcon = document.querySelector('.fa-shopping-cart');
-  cartIcon.setAttribute('value', '600')
 }
