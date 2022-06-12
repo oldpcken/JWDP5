@@ -10,20 +10,21 @@
     background-clip: text;
     background-image: linear-gradient(to right, rgba(255, 166, 0, 0.885), rgb(121, 44, 197));
 }
-.fa-shopping-cart {
-    position: relative;    
-}
-.fa-shopping-cart:after{
-    content:attr(value);
-    font-size:16px;
+/* .fa-shopping-cart {
+    position: relative;
+   
+} */
+.cart-qty{
+    /* content: attr(value); */
+    font-size: 16px;
     color: #000;
-    background: red;
-    border-radius:50%;
+    background: lightblue;
+    border-radius: 50%;
     padding: 0 5px;
-    position:relative;
-    left:-6px;
-    top:-17px;
-    /* z-index: 2; */
+    position: relative;
+    left: -10px;
+    top: -17px;
+
 }
 
 .form-group label {
