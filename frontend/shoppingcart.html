@@ -29,6 +29,7 @@
           </a>
           <a class = "navbar-brand btn btn-lg" href = "shoppingcart.html">
             <i class="fas fa-shopping-cart"></i>
+            <span class="cart-qty justify-content-center"></span>
           </a>
         </div>
       </nav>
@@ -53,10 +54,10 @@
       </section>
       <!-- // Create a form for the name and mailing address info (all fields are required)  -->
       <form class="form-group">
-        <div class="d-flex my-2 justify-content-between">
+        <div class="d-flex w-100">
           <span>
             <label for="firstName">First Name:</label>
-            <input class="form-control" type="text" name="fname" id="firstName" minlength="2" required>
+            <input class="form-control mr-4" type="text" name="fname" id="firstName" minlength="2" required>
           </span>
           <span>
             <label for="lastName">Last Name:</label>
@@ -65,18 +66,18 @@
         </div>
         <label for="address">Address:</label>
         <input class="form-control" type="text" name="addr" id="address" required>
-        <div class="d-flex my-2 justify-content-between">
+        <div class="d-flex my-1 justify-content-between">
           <span>
             <label for="city">City:</label>
-            <input class="form-control mx-0" type="text" id="city" name="city" required>
+            <input class="form-control" type="text" id="city" name="city" required>
           </span>
           <spav>
             <label for="state">State:</label>
-            <input class="form-control mr-3" type="text" name="state" size="2" maxlength="2" minlength="2" id="state" required>
+            <input class="form-control" type="text" name="state" size="2" maxlength="2" minlength="2" id="state" required>
           </spav>
           <span>
             <label for="zipcode">Zip:</label>
-            <input class="form-control my-2" type="text" name="zip" size="5" maxlength="5" minlength="5" id="zipcode" pattern="[0-9]*" required>
+            <input class="form-control" type="text" name="zip" size="5" maxlength="5" minlength="5" id="zipcode" pattern="[0-9]*" required>
           </span>
         </div>
         <label for="email">Email:</label>
