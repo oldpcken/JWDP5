@@ -33,9 +33,11 @@ displayCart();
 // A grand total is generated for all line items
 
 function displayCart() {
-
+    
+    //cycle thru cart array to create each line of the cart
     for ( let i = 0 ; i < cartItems ; i++ ) {
     
+        //create elements to be added to DOM
         const cartLine = document.createElement('div');
         const imageThumb = document.createElement('img'); 
         const name = document.createElement('p');
@@ -46,7 +48,10 @@ function displayCart() {
         const remBtn = document.createElement('button');
         const orderTotal = document.createElement('p');
       
+        //add classes and attributes to each element
         cartLine.classList.add('d-flex', 'p-1', 'border', 'border-primary');
+        cartLine.setAttribute('data-Id', cartArray[i].id);
+        cartLine.setAttribute('data-finish', cartArray[i].varnish);
 
         imageThumb.setAttribute('src', cartArray[i].imgUrl);
         imageThumb.setAttribute('height', 50);
@@ -59,6 +64,7 @@ function displayCart() {
         finish.innerText = cartArray[i].varnish;
 
         price.classList.add('px-1', 'col', 'col-sm', 'col-md', 'col-lg', 'pt-3');
+        //format price data to show $ & 2 decimal places
         let priceFmt =  (cartArray[i].unitPrice / 100);
         price.innerText = ('$' +  priceFmt.toFixed(2));
 
@@ -71,8 +77,8 @@ function displayCart() {
         remBtn.classList.add('col', 'col-sm', 'col-md', 'col-lg', 'd-xs-none', 'clr');
         remBtn.innerText = 'X';
         
-        //--------------------------------------------
-        // Event Listener for Deleting an Item from the Cart
+        //-------------------------------------------------------------
+        // Event Listener for triggering deleting an Item from the Cart
 
         remBtn.addEventListener('click', delCartLine);
                         
@@ -86,13 +92,14 @@ function displayCart() {
             cartArray[i].qty = e.target.value;
             total.innerText = ' $' + (totalFmt * e.target.value).toFixed(2);
             
-            updateGrandTotal();
-            syncCart();
-            updateCartQty();
+            syncCart();          // match up cart array & local storage
+            updateGrandTotal();  // Calculate new total for whole page
+            updateCartQty();     // Calculate new quantity in cart
         } )
         
-        let totalFmt = parseInt(cartArray[i].unitPrice / 100);
-        total.innerText = '$' + totalFmt.toFixed(2);
+        let pageLoadTotal = cartArray[i].qty * parseInt(cartArray[i].unitPrice / 100);
+        total.innerText = '$' + pageLoadTotal.toFixed(2);
+        
 
         cartLine.appendChild(imageThumb);
         cartLine.appendChild(name);
@@ -105,7 +112,7 @@ function displayCart() {
 
     };
 
-    updateGrandTotal();
+    updateGrandTotal();  // Calculate total for whole page
        
 } 
 
@@ -113,49 +120,70 @@ function displayCart() {
 // Sync up the cart array and local storage function
 
 function syncCart() {
+    //Stringify cart array & push to/replace local storage
     localStorage.setItem('cart', JSON.stringify(cartArray)); 
+    //Pull cart string from local storage & parse into cart array object
     cartArray = JSON.parse(localStorage.getItem('cart'));
- }
+}
 
- //---------------------------
+//--------------------------
 // Delete cart line function
 
 function delCartLine(ev) {
   console.log(ev);
-  ev.target.parentNode.classList.add('cool');
+//   ev.target.parentNode.classList.add('cool');
   //    - get the product ID
+  const id = ev.target.parentNode.dataset.id;
+  const finish = ev.target.parentNode.dataset.finish;
+  console.log(id); 
+   
+  //use "let index = list.findindex(o => o.id == id);" to retrieve the index of the product to be deleted
+  let index = cartArray.findIndex(o => o.id === id && o.varnish === finish);
 
-  //    - retrieve local storage array
+  console.log(index);
 
-  //    - use "let index = list.findindex(o => o.id == id);" to retrieve the index of the product to be deleted
-  
-  //    - use the splice() method to remove it from the array, I.E. 'array'.splice(index pos, how many);
-  
-  // updateGrandTotal(); |
-  // syncCart();         |---> functions to uncomment later
-  // updateCartQty();    |
+  //use the splice() method to remove the selected cartline from the array
+  cartArray.splice(index,1);
+
+  console.log(cartArray);
+
+  //use remove method to remove the selected cartline from the DOM
+  ev.target.parentNode.remove();
+
+  syncCart();          // match up cart array & local storage
+  updateGrandTotal();  // Calculate new total for whole page
+  updateCartQty();     // Calculate new quantity in cart
 
 }
 
-//--------------------------------------------
-// Update the Grand Total of the Order Function
+//---------------------------------------------
+// Update the grand total of the order Function
 
 function updateGrandTotal() {
     // console.log(cartArray);
+
+    //initalize variable
     let total = 0;
+    //Cycle thru cart data to calculate the grand total
+
     for (let i=0; i < cartArray.length; i++) {
+        //Multiply each unit price by the quantity of item
         total = total + cartArray[i].unitPrice * cartArray[i].qty;
+
         console.log(cartArray[i].unitPrice);
     }
+    //grab html ID to append grand total data to
     const orderTotal = document.getElementById('grandtotal');
+    //format grand total $ & 2 decimal places - value put in DOM
     orderTotal.innerText = '$' + (total/100).toFixed(2);
     
 }
 
-//-------------------------------
-// Calculate total price function
+//------------------------------------
+// Calculate total line price function
 
 function totatPrice() {
+    //Format line price - $ & 2 decimal places, multiply unit price by quantity 
     total.innerText = '$' + ((cartArray[i].unitPrice / 100).toFixed(2) * e.target.value);
 };
 
@@ -253,7 +281,7 @@ function updateCartQty() {
     let totalQty = 0
   
     //this will calculate the # of items appearing in the cart
-    console.log('The Update Cart Quantity Function is Engaged!')
+    // console.log('The Update Cart Quantity Function is Engaged!')
   
     const cartIcon = document.getElementsByClassName("cart-qty")[0];
     const storage = JSON.parse(localStorage.getItem('cart'));

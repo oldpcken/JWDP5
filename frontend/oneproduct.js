@@ -1,6 +1,6 @@
-// Get the product data passed from the all products page
+// Get the product data passed from the All Products page
 
-// Get the shopping cart totals from local storage
+// Get the shopping cart total from local storage
 updateCartQty();
 
 // Objects in array arrainged like this...
@@ -36,12 +36,13 @@ let url1 = window.location.href;
 let newUrl = new URL(url1);
 let id = newUrl.searchParams.get('id');
 
-// function used that to retrieve the product data & turn the response into a JS object
+//-------------------------------
+// Retrieve product data function
 
 function retrieveProduct() {
     return new Promise((resolve, reject) => {
       
-      productRequest.open('GET', url + id);             // open a GET api
+      productRequest.open('GET', url + id);       // open a GET api
       
       productRequest.onreadystatechange = () => {
 
@@ -66,7 +67,8 @@ function retrieveProduct() {
 
 retrieveProduct();
 
-// Function to create the product cards / page layout
+//------------------------------------------------
+// Create the product cards & page layout function
 // Add picture, title, description, price, pulldown customize menu, & add to cart button
 
 function createCard(cardObj) {
@@ -122,11 +124,11 @@ function createCard(cardObj) {
     currentProduct.name = cardObj.name;
     currentProduct.unitPrice = cardObj.price;
     // currentProduct.qty = cardObj.qty;
-    // console.log
-     
+        
   };
 
-// Function to build pulldown menu for customization,
+//------------------------------------------------------
+// Build pulldown menu for varnish customization function
 
 function createPulldown(array) {
   const pulldown = document.createElement('select');
@@ -143,6 +145,7 @@ function createPulldown(array) {
     pulldown.appendChild(option);
   }
 
+  //----------------------------------------- 
   // Event listener for varnish choice change
 
   pulldown.addEventListener( 'change', (ev) => {
@@ -152,11 +155,8 @@ function createPulldown(array) {
   return pulldown;
 }
 
-// localStorage.setItem(one object); -->NO cycle through retrieved objects
-// keep localstorage cart synced to cart array on page
-// localStorage.clear();
-
-// Add product data to local storage in an array, Check for dupes
+//-------------------------------------------------
+// Add unique product data to shopping cart function
 
 function addToCart(item) {
   
@@ -186,30 +186,20 @@ function addToCart(item) {
 
 //--------------------------------------------------
 // Sync up the cart array and local storage function
+
 function syncCart() {
   localStorage.setItem('cart', JSON.stringify(cartArray)); 
   cartArray = JSON.parse(localStorage.getItem('cart'));
 }
-  // console.log('Cartarray', cartArray);
 
-  //Call an updateCart() fuction
-  //let addToCart = document.getElementById('addToCart');
-    
-// function updateCart() {
-    //
-//}
-
-//--------------------------------------------
+//------------------------------
 // Update Cart Quantity function
 
 function updateCartQty() {
 
   // Initialize quantity in local storage
   let totalQty = 0
-
-  //this will calculate the # of items appearing in the cart
-  console.log('The Update Cart Quantity Function is Engaged!')
-
+  
   const cartIcon = document.getElementsByClassName("cart-qty")[0];
   const storage = JSON.parse(localStorage.getItem('cart'));
 
@@ -224,7 +214,4 @@ function updateCartQty() {
 
   localStorage.setItem('qty', JSON.stringify(totalQty));
   cartIcon.innerText = totalQty;
-  
-  console.log(totalQty);
-
 }

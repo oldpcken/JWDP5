@@ -1,4 +1,4 @@
-//
+// JS for Confirmation Page
 
 // Get the shopping cart totals from local storage
 updateCartQty();
@@ -9,11 +9,12 @@ updateCartQty();
 
 // Clear local storage after successful server response that order has been made
 
+
+
+
 // localStorage.clear();
 
-
-
-//--------------------------------------------
+//------------------------------
 // Update Cart Quantity function
 
 function updateCartQty() {
@@ -38,7 +39,5 @@ function updateCartQty() {
   
     localStorage.setItem('qty', JSON.stringify(totalQty));
     cartIcon.innerText = totalQty;
-    
-    console.log(totalQty);
-  
+     
   }
