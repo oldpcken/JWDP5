@@ -7,7 +7,6 @@ if (cartArray.length === 0) {
 let cartItems = cartArray.length;
 
 console.log(cartArray);
-console.log("items in cart", cartItems);
 
 //Get and create elements for the cart
 const main = document.getElementById('shoppingcart');
@@ -49,32 +48,34 @@ function displayCart() {
         const orderTotal = document.createElement('p');
       
         //add classes and attributes to each element
-        cartLine.classList.add('d-flex', 'p-1', 'border', 'border-primary');
+        cartLine.classList.add('d-flex', 'p-1', 'border', 'border-primary', 'rounded');
         cartLine.setAttribute('data-Id', cartArray[i].id);
         cartLine.setAttribute('data-finish', cartArray[i].varnish);
 
         imageThumb.setAttribute('src', cartArray[i].imgUrl);
         imageThumb.setAttribute('height', 50);
-        imageThumb.classList.add('pt-1', 'col', 'col-sm', 'col-md', 'col-lg' );
+        imageThumb.setAttribute('width', 60);
+        imageThumb.classList.add('pt-1');
 
-        name.classList.add('px-1', 'col-3', 'col-sm-3', 'col-md-3', 'col-lg-3', 'pt-3');
+        name.classList.add('px-1', 'pt-3', 'col-2');
         name.innerText = cartArray[i].name;
 
-        finish.classList.add('px-1', 'col-2', 'col-sm-2', 'col-md-2', 'col-lg-2', 'pt-3');
+        finish.classList.add('px-1', 'pt-3', 'col-1', 'col-sm-2', 'col-md-3');
         finish.innerText = cartArray[i].varnish;
 
-        price.classList.add('px-1', 'col', 'col-sm', 'col-md', 'col-lg', 'pt-3');
-        //format price data to show $ & 2 decimal places
+        price.classList.add('px-1', 'pt-3', 'col-1', 'col-sm-2');
+        //format price data to money
         let priceFmt =  (cartArray[i].unitPrice / 100);
         price.innerText = ('$' +  priceFmt.toFixed(2));
 
-        itemNum.classList.add('col-xs-2', 'col', 'col-sm', 'col-md', 'col-lg', 'pt-2')
+        itemNum.classList.add('col-xs-2', 'pt-2')
         itemNum.innerHTML = `<input class="form-control" type="number" size="2" value=${cartArray[i].qty} min="1" max="99">`;
 
-        total.classList.add('px-1', 'col', 'col-sm', 'col-md', 'col-lg', 'pt-3');
+        total.classList.add('px-1', 'pt-3', 'col-1', 'col-sm-2', 'col-md-3');
 
         remBtn.setAttribute('type', 'button');
-        remBtn.classList.add('col', 'col-sm', 'col-md', 'col-lg', 'd-xs-none', 'clr');
+        remBtn.classList.add('rounded-circle', 'clr');
+        // remBtn.setAttribute('height', 20);
         remBtn.innerText = 'X';
         
         //-------------------------------------------------------------
@@ -86,8 +87,9 @@ function displayCart() {
         // Event Listener for Item Quantity Change
         
         itemNum.addEventListener('change', (e) => {
-            //function recacullates cart total price on quantity change
-                       
+
+            //function recalculates cart total price on quantity change & formats it to money
+            
             let totalFmt = parseInt(cartArray[i].unitPrice / 100); 
             cartArray[i].qty = e.target.value;
             total.innerText = ' $' + (totalFmt * e.target.value).toFixed(2);
@@ -97,10 +99,11 @@ function displayCart() {
             updateCartQty();     // Calculate new quantity in cart
         } )
         
+        //Caclulate line total and format it for display
         let pageLoadTotal = cartArray[i].qty * parseInt(cartArray[i].unitPrice / 100);
         total.innerText = '$' + pageLoadTotal.toFixed(2);
         
-
+        //assemble cartline & add it to the DOM
         cartLine.appendChild(imageThumb);
         cartLine.appendChild(name);
         cartLine.appendChild(finish);
@@ -130,14 +133,18 @@ function syncCart() {
 // Delete cart line function
 
 function delCartLine(ev) {
+
   console.log(ev);
-//   ev.target.parentNode.classList.add('cool');
-  //    - get the product ID
+  // ev.target.parentNode.classList.add('cool');
+
+  // get the product ID
   const id = ev.target.parentNode.dataset.id;
+  // get the product finish
   const finish = ev.target.parentNode.dataset.finish;
+
   console.log(id); 
    
-  //use "let index = list.findindex(o => o.id == id);" to retrieve the index of the product to be deleted
+  //use findindex() method to retrieve the index of the product to be deleted
   let index = cartArray.findIndex(o => o.id === id && o.varnish === finish);
 
   console.log(index);
@@ -147,7 +154,7 @@ function delCartLine(ev) {
 
   console.log(cartArray);
 
-  //use remove method to remove the selected cartline from the DOM
+  //use the remove method to remove the selected cartline from the DOM
   ev.target.parentNode.remove();
 
   syncCart();          // match up cart array & local storage
@@ -170,7 +177,7 @@ function updateGrandTotal() {
         //Multiply each unit price by the quantity of item
         total = total + cartArray[i].unitPrice * cartArray[i].qty;
 
-        console.log(cartArray[i].unitPrice);
+        // console.log(cartArray[i].unitPrice);
     }
     //grab html ID to append grand total data to
     const orderTotal = document.getElementById('grandtotal');
@@ -188,36 +195,182 @@ function totatPrice() {
 };
 
 //--------------------------------------------
+//RegEx for input field validation
+
+const fNameRegex = /^[A-Za-z ]{2,32}$/;
+const lNameRegex = /^[A-Za-z ]{2,32}$/;
+const addressRegex = /^[A-Za-z0-9 ]{5,32}$/;
+const cityRegex = /^[A-Za-z ]{3,32}$/;
+const stateRegex = /^[A-Za-z ]{2,2}$/;
+const zipRegex = /^[0-9 ]{5,5}$/;
+const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+//--------------------------------------------
+// Form Validation
+
+let firstNameIsValid = false;
+let lastNameIsValid = false;
+let addressIsValid = false;
+let cityIsValid = false;
+let stateIsValid = false;
+let zipcodeIsValid = false;
+let emailIsValid = false;
+
+// keyup event listeners for all input fields
+// If true - adds green, if false - adds red
+
+const fName = document.getElementById('firstName');
+const lName = document.getElementById('lastName');
+const address = document.getElementById('address');
+const city = document.getElementById('city');
+const state = document.getElementById('state');
+const zip = document.getElementById('zipcode');
+const email = document.getElementById('email');
+
+// let fNameErrorMsg;
+
+fName.addEventListener('keyup', () => {
+    // console.log('inside function');
+    if (fNameRegex.test(fName.value)) {
+        console.log(fName.value);
+        fName.style.border = 'solid green';
+        firstNameIsValid = true;
+    } else {
+        fName.style.border = 'solid red';
+        firstNameIsValid = false;
+    }
+    console.log(firstNameIsValid);
+});
+
+// Add rest of tests once first one is working!!
+fName.addEventListener('keyup', () => {
+    // console.log('inside function');
+    if (fNameRegex.test(fName.value)) {
+        console.log(fName.value);
+        fName.style.border = 'solid green';
+        firstNameIsValid = true;
+    } else {
+        fName.style.border = 'solid red';
+        firstNameIsValid = false;
+    }
+    console.log(firstNameIsValid);
+});
+// last name
+lName.addEventListener('keyup', () => {
+    // console.log('inside function');
+    if (lNameRegex.test(lName.value)) {
+        console.log(lName.value);
+        lName.style.border = 'solid green';
+        lastNameIsValid = true;
+    } else {
+        lName.style.border = 'solid red';
+        lastNameIsValid = false;
+    }
+    console.log(lastNameIsValid);
+});
+// address
+address.addEventListener('keyup', () => {
+    // console.log('inside function');
+    if (addressRegex.test(address.value)) {
+        console.log(address.value);
+        address.style.border = 'solid green';
+        addressIsValid = true;
+    } else {
+        address.style.border = 'solid red';
+        addressIsValid = false;
+    }
+    console.log(addressIsValid);
+});
+//city
+city.addEventListener('keyup', () => {
+    // console.log('inside function');
+    if (cityRegex.test(city.value)) {
+        console.log(city.value);
+        city.style.border = 'solid green';
+        cityIsValid = true;
+    } else {
+        city.style.border = 'solid red';
+        cityIsValid = false;
+    }
+    console.log(cityIsValid);
+});
+//state
+state.addEventListener('keyup', () => {
+    // console.log('inside function');
+    if (stateRegex.test(state.value)) {
+        console.log(state.value);
+        state.style.border = 'solid green';
+        stateIsValid = true;
+    } else {
+        state.style.border = 'solid red';
+        stateIsValid = false;
+    }
+    console.log(stateIsValid);
+});
+//zip
+zip.addEventListener('keyup', () => {
+    // console.log('inside function');
+    if (zipRegex.test(zip.value)) {
+        console.log(zip.value);
+        zip.style.border = 'solid green';
+        zipcodeIsValid = true;
+    } else {
+        zip.style.border = 'solid red';
+        zipcodeIsValid = false;
+    }
+    console.log(zipcodeIsValid);
+});
+//email
+email.addEventListener('keyup', () => {
+    // console.log('inside function');
+    if (emailRegex.test(email.value)) {
+        console.log(email.value);
+        email.style.border = 'solid green';
+        emailIsValid = true;
+    } else {
+        email.style.border = 'solid red';
+        emailIsValid = false;
+    }
+    console.log(emailIsValid);
+});
+
+email.addEventListener('keyup', () => {
+  if (firstNameIsValid === true && lastNameIsValid === true && addressIsValid === true && cityIsValid === true && stateIsValid === true && zipcodeIsValid === true && emailIsValid === true) {
+      // document.getElementById('order').disabled = false;
+      
+  } else {
+      console.log('All fields must not be valid!!')
+  }
+});
+
+//--------------------------------------------
 // Create a makeOrder() function to send data to the confirmation page
 
 const subOrder = document.getElementById('order');
-const formData = document.getElementById('form-group');
-
-// const formData = document.getElementsByClassName('form-control');
-
-// const data = new FormData(formData);
-// const values = [...data.entries()];
-// const formFirstname = formData.firstName.value;
-
-// console.log('this is the first name', formFirstname);
-// console.log('This is the form data', formData);
+// const formData = document.getElementById('form-group');
 
 //--------------------------------------------
 // Event Listener for the Make Order Button
 
 subOrder.addEventListener('click', (ev) => {
-    const order = {
+
+    if (true) {
+    let order = {
         contact: {
          firstName: "",
          lastName: "",
          address: "",
          city: "",
+         state: "",
          email: ""
        },
        products: []
       }
+          
+      getFormData(order);
 
-      // getFormData();
+    //   console.log(order);
+
       getOrderData(order);
 
     ev.preventDefault();
@@ -231,24 +384,50 @@ subOrder.addEventListener('click', (ev) => {
         productOrder.onreadystatechange = () => {
           if (productOrder.readyState === 4) {
             if (productOrder.status === 200 || productOrder.status === 201) {
-               resolve(JSON.parse(productOrder.response));    // retrieve the response if successful
+
+                console.log('product order status is ', productOrder.status)
+
+                resolve(JSON.parse(productOrder.response));    // retrieve the response if successful
+                
+                console.log('The product order response is ', productOrder.response);
             } else {
                 reject(JSON.parse(productOrder.response));
+
+                console.log('The rejected product order response is ', productOrder.response);
             }
-            const objOrdArray = JSON.parse(productOrder.response); 
-                             
-               
+            const objOrdArray = JSON.parse(productOrder.response);   
+            
+            // console.log('The JSON parsed response is ', objOrdArray);
+            location.href='confirmation.html' + '?conf=' + objOrdArray.orderId;
           };
+        
         };
-        productOrder.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        // productOrder.send((urlEncodedData));
+        
+        body = JSON.stringify(order);
+        productOrder.setRequestHeader("Content-Type", "application/json");
+        productOrder.send(body);
+        console.log('order is', order);
     });
 
-    console.log('');
-}); 
+    console.log('Is this not reachable?');
+  } else {
+    alert('Go back to fill out the form');
+  }
+});
 
-function getFormData() {
-    
+//-----------------------------------------
+// Retrieve data from contact form function
+
+function getFormData(order) {
+    order.contact.firstName = document.getElementById('firstName').value;
+    order.contact.lastName = document.getElementById('lastName').value;
+    order.contact.address = document.getElementById('address').value;
+    order.contact.city = document.getElementById('city').value;
+    order.contact.state = document.getElementById('state').value;
+    order.contact.zipcode = document.getElementById('zipcode').value;
+    order.contact.email = document.getElementById('email').value;
+
+    console.log('Get Form Data');    
 }
 
 //------------------------------------------
@@ -257,20 +436,12 @@ function getFormData() {
 function getOrderData(array) {
     //    - gather cart data (as an array?) to be passed to confirmation page
     for (let i=0; i < cartArray.length; i++) {
-        array.products.push(cartArray[i].id)
-        
+        array.products.push(cartArray[i].id)        
     }
     console.log(array.products);
 }
+
 updateCartQty();
-
-//------------------------------------------
-// Retrieve form data for the post function
-
-//    - gather order form data (as an object?) to be passed the confirmation page
-function getFormData() {
-    console.log('Get Form Data function engaged');
-}
 
 //------------------------------
 // Update Cart Quantity function
@@ -285,7 +456,7 @@ function updateCartQty() {
   
     const cartIcon = document.getElementsByClassName("cart-qty")[0];
     const storage = JSON.parse(localStorage.getItem('cart'));
-    console.log(cartIcon);
+    // console.log(cartIcon);
     if (storage === []) {
         totalQty = 0;
         
@@ -298,7 +469,7 @@ function updateCartQty() {
     localStorage.setItem('qty', JSON.stringify(totalQty));
     cartIcon.innerText = totalQty;
     
-    console.log(totalQty);
+    console.log('total quantity is', totalQty);
   
   }
 

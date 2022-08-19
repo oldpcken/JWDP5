@@ -93,7 +93,7 @@ function updateCartQty() {
   let totalQty = 0
 
   //this will calculate the # of items appearing in the cart
-  console.log('The Update Cart Quantity Function is Engaged!')
+  // console.log('The Update Cart Quantity Function is Engaged!')
 
   const cartIcon = document.getElementsByClassName("cart-qty")[0];
   const storage = JSON.parse(localStorage.getItem('cart'));
@@ -110,6 +110,6 @@ function updateCartQty() {
   localStorage.setItem('qty', JSON.stringify(totalQty));
   cartIcon.innerText = totalQty;
   
-  console.log(totalQty);
+  // console.log(totalQty);
 
 }

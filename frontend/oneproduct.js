@@ -72,7 +72,7 @@ retrieveProduct();
 // Add picture, title, description, price, pulldown customize menu, & add to cart button
 
 function createCard(cardObj) {
-    console.log(cardObj);
+    // console.log(cardObj);
     const main = document.getElementById('product');
     const card = document.createElement('div');
     const image = document.createElement('img'); 

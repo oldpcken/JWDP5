@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
 
-    <title>Orinoco Cart</title>
+    <title>Orinoco Shopping Cart</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -41,23 +41,21 @@
       </header>
   
      <!-- <main> -->
-      <div class="flex-column p-3" id="shoppingcart">
+      <div class="flex-column p-3 col w-100" id="shoppingcart">
     
       </div>
       <!-- </main> -->
 
       <section class="grandtotal">
-        <h5>Grand Total: <span id="grandtotal">
-          
-        </span></h5>
+        <h5>Grand Total: <span id="grandtotal"></span></h5>
         
       </section>
       <!-- // Create a form for the name and mailing address info (all fields are required)  -->
-      <form class="form-group">
-        <div class="d-flex w-100">
+      <form class="form-group w-100 w-sm-60 w=md-50">
+        <div class="d-flex justify-content-between ">
           <span>
             <label for="firstName">First Name:</label>
-            <input class="form-control mr-4" type="text" name="fname" id="firstName" minlength="2" required>
+            <input class="form-control" type="text" name="fname" id="firstName" minlength="2" required>
           </span>
           <span>
             <label for="lastName">Last Name:</label>
@@ -83,7 +81,7 @@
         <label for="email">Email:</label>
         <input class="form-control" type="email" name="email" id="email" required>
 
-        <input type="submit" value="Submit Order" id="order">
+        <button type="button" id="order">Submit Order</button>
       </form>
 
       <footer class = "row bg-info p-2">
