@@ -1,16 +1,20 @@
 // JS for Confirmation Page
 
 let total = 0;
-
-// Get the shopping cart totals from local storage
-updateCartQty();
+let cust = '';
 
 // Retrieve shopping cart data from localStorage
 
-let cartArray = JSON.parse(localStorage.getItem("cart")) || [];
+let cartArray = JSON.parse(localStorage.getItem('cart')) || [];
 if (cartArray.length === 0) {
     alert("Your cart is currently empty!");
 }
+
+//grab the name from localstorage for the confirmation msg
+
+let customer = JSON.parse(localStorage.getItem('cust'));
+console.log('name is ', cust);
+
 
 // Grab the total price for the order
 
@@ -30,16 +34,20 @@ let conf = newUrl.searchParams.get('conf');
 // console.log('conf is ', conf);
 
 // confirmation.setAttribute('align-content', 'center')
-confirmation.classList.add('h3', 'text-success', 'text-center');
+confirmation.classList.add('h4', 'text-success', 'text-center');
 
-confirmation.innerHTML = '<br/> Thank you for your order! <br/><br/>'; 
+confirmation.innerHTML = '<br/>' + customer + ', thank you for your order! <br/><br/>'; 
 confirmation.innerHTML += 'The total price is $' + (total/100).toFixed(2) + '<br/><br/>'; 
 confirmation.innerHTML += 'Your order number is ' + conf + '<br/><br/>';
 
 
-// Clear local storage after successful server response that order has been made
+// Clear local storage after successful server response that order has been made, reset cart total
+localStorage.clear();
+cartArray = [];
+updateGrandTotal();
 
-// localStorage.clear();
+// Update the cart quantity to 0 after local storage is cleared
+updateCartQty();
 
 //---------------------------------------------
 // Update the grand total of the order Function
@@ -71,7 +79,7 @@ function updateCartQty() {
     const cartIcon = document.getElementsByClassName("cart-qty")[0];
     const storage = JSON.parse(localStorage.getItem('cart'));
   
-    if (storage === []) {
+    if (storage === [] || storage === null) {
         totalQty = 0;
         
     } else {

@@ -98,7 +98,10 @@ function updateCartQty() {
   const cartIcon = document.getElementsByClassName("cart-qty")[0];
   const storage = JSON.parse(localStorage.getItem('cart'));
 
-  if (storage === []) {
+  console.log('storage is ', storage);
+  console.log('totalQty is ', totalQty);
+
+  if (storage === [] || storage === null) {
       totalQty = 0;
       
   } else {

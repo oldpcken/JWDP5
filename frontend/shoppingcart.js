@@ -1,3 +1,7 @@
+//Update the shopping cart quantity
+
+updateCartQty();
+
 // Retrieve shopping cart data from localStorage
 
 let cartArray = JSON.parse(localStorage.getItem("cart")) || [];
@@ -343,6 +347,10 @@ email.addEventListener('keyup', () => {
   }
 });
 
+//variable for the full name for the confirmation page
+let fullName = '';
+let cust = '';
+
 //--------------------------------------------
 // Create a makeOrder() function to send data to the confirmation page
 
@@ -368,6 +376,9 @@ subOrder.addEventListener('click', (ev) => {
       }
           
       getFormData(order);
+
+      localStorage.setItem('cust', JSON.stringify(fullName));
+      console.log('cust is ', cust);
 
     //   console.log(order);
 
@@ -421,6 +432,9 @@ subOrder.addEventListener('click', (ev) => {
 function getFormData(order) {
     order.contact.firstName = document.getElementById('firstName').value;
     order.contact.lastName = document.getElementById('lastName').value;
+    fullName = (order.contact.firstName + ' ' + order.contact.lastName);
+    console.log('fullName is ', fullName);
+
     order.contact.address = document.getElementById('address').value;
     order.contact.city = document.getElementById('city').value;
     order.contact.state = document.getElementById('state').value;
@@ -441,8 +455,6 @@ function getOrderData(array) {
     console.log(array.products);
 }
 
-updateCartQty();
-
 //------------------------------
 // Update Cart Quantity function
 
@@ -457,7 +469,7 @@ function updateCartQty() {
     const cartIcon = document.getElementsByClassName("cart-qty")[0];
     const storage = JSON.parse(localStorage.getItem('cart'));
     // console.log(cartIcon);
-    if (storage === []) {
+    if (storage === [] || storage === null) {
         totalQty = 0;
         
     } else {
