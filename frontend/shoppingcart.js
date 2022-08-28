@@ -2,10 +2,16 @@
 
 updateCartQty();
 
+//--------------------------------------------
+// Create a makeOrder() function to send data to the confirmation page
+
+const subOrder = document.getElementById('order');
+
 // Retrieve shopping cart data from localStorage
 
 let cartArray = JSON.parse(localStorage.getItem("cart")) || [];
 if (cartArray.length === 0) {
+    subOrder.setAttribute('disabled', '')
     alert("Your cart is currently empty!");
 }
 let cartItems = cartArray.length;
@@ -41,45 +47,50 @@ function displayCart() {
     for ( let i = 0 ; i < cartItems ; i++ ) {
     
         //create elements to be added to DOM
+
+        //****add more divs to make cartline responsive!!!
+        
         const cartLine = document.createElement('div');
         const imageThumb = document.createElement('img'); 
-        const name = document.createElement('p');
-        const finish = document.createElement('p');
-        const price = document.createElement('p');
-        const itemNum = document.createElement('p');
-        const total = document.createElement('p');
+        const name = document.createElement('div');
+        const finish = document.createElement('div');
+        const price = document.createElement('div');
+        const itemNum = document.createElement('div');
+        const total = document.createElement('div');
         const remBtn = document.createElement('button');
         const orderTotal = document.createElement('p');
       
         //add classes and attributes to each element
-        cartLine.classList.add('d-flex', 'p-1', 'border', 'border-primary', 'rounded');
+        cartLine.classList.add('row', 'pl-1', 'mt-1', 'border', 'border-primary', 'rounded');
         cartLine.setAttribute('data-Id', cartArray[i].id);
         cartLine.setAttribute('data-finish', cartArray[i].varnish);
 
         imageThumb.setAttribute('src', cartArray[i].imgUrl);
-        imageThumb.setAttribute('height', 50);
+        imageThumb.setAttribute('height', 60);
         imageThumb.setAttribute('width', 60);
-        imageThumb.classList.add('pt-1');
+        imageThumb.classList.add('py-1');
 
-        name.classList.add('px-1', 'pt-3', 'col-2');
+        name.classList.add('px-1', 'pt-2', 'col-3', 'col-sm-2');
+        // name.setAttribute('minWidth', 90)
         name.innerText = cartArray[i].name;
 
-        finish.classList.add('px-1', 'pt-3', 'col-1', 'col-sm-2', 'col-md-3');
+        finish.classList.add('px-1', 'pt-2', 'col-3', 'col-sm-2');
         finish.innerText = cartArray[i].varnish;
 
-        price.classList.add('px-1', 'pt-3', 'col-1', 'col-sm-2');
+        price.classList.add('px-1', 'pt-2', 'col-3', 'col-sm-2');
         //format price data to money
         let priceFmt =  (cartArray[i].unitPrice / 100);
         price.innerText = ('$' +  priceFmt.toFixed(2));
 
-        itemNum.classList.add('col-xs-2', 'pt-2')
-        itemNum.innerHTML = `<input class="form-control" type="number" size="2" value=${cartArray[i].qty} min="1" max="99">`;
+        itemNum.classList.add('pt-1', 'col-3', 'col-sm-2');
+        // itemNum.setAttribute('width', 80);
+        itemNum.innerHTML = `<input class="form-control" type="number"  style='min-width: 65px' size="2" value=${cartArray[i].qty} min="1" max="99">`;
 
-        total.classList.add('px-1', 'pt-3', 'col-1', 'col-sm-2', 'col-md-3');
+        total.classList.add('px-1', 'pt-2', 'col-3', 'col-sm-2');
 
         remBtn.setAttribute('type', 'button');
-        remBtn.classList.add('rounded-circle', 'clr');
-        // remBtn.setAttribute('height', 20);
+        remBtn.classList.add('rounded', 'clr', 'm-1', 'col-2', 'col-sm-1');
+        remBtn.setAttribute('height', 50);
         remBtn.innerText = 'X';
         
         //-------------------------------------------------------------
@@ -155,6 +166,9 @@ function delCartLine(ev) {
 
   //use the splice() method to remove the selected cartline from the array
   cartArray.splice(index,1);
+  if (cartArray.length===0) {
+    subOrder.setAttribute('disabled', '');
+  }
 
   console.log(cartArray);
 
@@ -233,8 +247,21 @@ const email = document.getElementById('email');
 
 // let fNameErrorMsg;
 
+// fName.addEventListener('keyup', () => {
+    
+//     if (fNameRegex.test(fName.value)) {
+//         console.log(fName.value);
+//         fName.style.border = 'solid green';
+//         firstNameIsValid = true;
+//     } else {
+//         fName.style.border = 'solid red';
+//         firstNameIsValid = false;
+//     }
+//     console.log(firstNameIsValid);
+// });
+// first name test
 fName.addEventListener('keyup', () => {
-    // console.log('inside function');
+    
     if (fNameRegex.test(fName.value)) {
         console.log(fName.value);
         fName.style.border = 'solid green';
@@ -245,23 +272,9 @@ fName.addEventListener('keyup', () => {
     }
     console.log(firstNameIsValid);
 });
-
-// Add rest of tests once first one is working!!
-fName.addEventListener('keyup', () => {
-    // console.log('inside function');
-    if (fNameRegex.test(fName.value)) {
-        console.log(fName.value);
-        fName.style.border = 'solid green';
-        firstNameIsValid = true;
-    } else {
-        fName.style.border = 'solid red';
-        firstNameIsValid = false;
-    }
-    console.log(firstNameIsValid);
-});
-// last name
+// last name test
 lName.addEventListener('keyup', () => {
-    // console.log('inside function');
+    
     if (lNameRegex.test(lName.value)) {
         console.log(lName.value);
         lName.style.border = 'solid green';
@@ -272,9 +285,9 @@ lName.addEventListener('keyup', () => {
     }
     console.log(lastNameIsValid);
 });
-// address
+// address test
 address.addEventListener('keyup', () => {
-    // console.log('inside function');
+    
     if (addressRegex.test(address.value)) {
         console.log(address.value);
         address.style.border = 'solid green';
@@ -285,9 +298,9 @@ address.addEventListener('keyup', () => {
     }
     console.log(addressIsValid);
 });
-//city
+//city test
 city.addEventListener('keyup', () => {
-    // console.log('inside function');
+    
     if (cityRegex.test(city.value)) {
         console.log(city.value);
         city.style.border = 'solid green';
@@ -298,9 +311,9 @@ city.addEventListener('keyup', () => {
     }
     console.log(cityIsValid);
 });
-//state
+//state test
 state.addEventListener('keyup', () => {
-    // console.log('inside function');
+    
     if (stateRegex.test(state.value)) {
         console.log(state.value);
         state.style.border = 'solid green';
@@ -311,9 +324,9 @@ state.addEventListener('keyup', () => {
     }
     console.log(stateIsValid);
 });
-//zip
+//zipcode test
 zip.addEventListener('keyup', () => {
-    // console.log('inside function');
+    
     if (zipRegex.test(zip.value)) {
         console.log(zip.value);
         zip.style.border = 'solid green';
@@ -324,9 +337,9 @@ zip.addEventListener('keyup', () => {
     }
     console.log(zipcodeIsValid);
 });
-//email
+//email test
 email.addEventListener('keyup', () => {
-    // console.log('inside function');
+    
     if (emailRegex.test(email.value)) {
         console.log(email.value);
         email.style.border = 'solid green';
@@ -338,40 +351,39 @@ email.addEventListener('keyup', () => {
     console.log(emailIsValid);
 });
 
-email.addEventListener('keyup', () => {
-  if (firstNameIsValid === true && lastNameIsValid === true && addressIsValid === true && cityIsValid === true && stateIsValid === true && zipcodeIsValid === true && emailIsValid === true) {
-      // document.getElementById('order').disabled = false;
+// email.addEventListener('keyup', () => {
+//   if (firstNameIsValid === true && lastNameIsValid === true && addressIsValid === true && cityIsValid === true && stateIsValid === true && zipcodeIsValid === true && emailIsValid === true) {
+//       // document.getElementById('order').disabled = false;
       
-  } else {
-      console.log('All fields must not be valid!!')
-  }
-});
+//   } else {
+//       console.log('All fields must not be valid!!')
+//   }
+// });
 
 //variable for the full name for the confirmation page
 let fullName = '';
 let cust = '';
 
-//--------------------------------------------
-// Create a makeOrder() function to send data to the confirmation page
+// //--------------------------------------------
+// // Create a makeOrder() function to send data to the confirmation page
 
-const subOrder = document.getElementById('order');
-// const formData = document.getElementById('form-group');
+// const subOrder = document.getElementById('order');
 
 //--------------------------------------------
 // Event Listener for the Make Order Button
 
 subOrder.addEventListener('click', (ev) => {
 
-    if (true) {
-    let order = {
-        contact: {
+    if (firstNameIsValid === true && lastNameIsValid === true && addressIsValid === true && cityIsValid === true && stateIsValid === true && zipcodeIsValid === true && emailIsValid === true) {
+      let order = {
+         contact: {
          firstName: "",
          lastName: "",
          address: "",
          city: "",
          state: "",
          email: ""
-       },
+         },
        products: []
       }
           
@@ -380,15 +392,13 @@ subOrder.addEventListener('click', (ev) => {
       localStorage.setItem('cust', JSON.stringify(fullName));
       console.log('cust is ', cust);
 
-    //   console.log(order);
-
       getOrderData(order);
 
-    ev.preventDefault();
-    let productOrder = new XMLHttpRequest();            // create the instance of XMLHttprequest
-    const url = "http://localhost:3000/api/furniture";   // create the URL string
+      ev.preventDefault();
+      let productOrder = new XMLHttpRequest();            // create the instance of XMLHttprequest
+      const url = "http://localhost:3000/api/furniture";   // create the URL string
 
-    return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
       
         productOrder.open('POST', url + "/order");             // open a POST api
         
@@ -414,16 +424,15 @@ subOrder.addEventListener('click', (ev) => {
         
         };
         
-        body = JSON.stringify(order);
-        productOrder.setRequestHeader("Content-Type", "application/json");
-        productOrder.send(body);
-        console.log('order is', order);
-    });
+      body = JSON.stringify(order);
+      productOrder.setRequestHeader("Content-Type", "application/json");
+      productOrder.send(body);
+      console.log('order is', order);
 
-    console.log('Is this not reachable?');
-  } else {
-    alert('Go back to fill out the form');
-  }
+    });
+    } else {
+        alert("Go back to fill out the form!");
+    }
 });
 
 //-----------------------------------------
