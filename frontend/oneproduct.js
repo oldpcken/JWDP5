@@ -1,9 +1,9 @@
-// Get the product data passed from the All Products page
+// JS for the single product page
 
 // Get the shopping cart total from local storage
 updateCartQty();
 
-// Objects in array arrainged like this...
+// Product objects in array arrainged like this...
 // const productObj = [
 //     'varnish[]',
 //     '_id',
@@ -13,13 +13,10 @@ updateCartQty();
 //     'imageUrl'
 // ];
 
-let productRequest = new XMLHttpRequest();            // create the instance of XMLHttprequest
-const url = "http://localhost:3000/api/furniture/";   // create the URL string
-
 let cartStr = localStorage.getItem('cart') || '[]'; 
 let cartArray = JSON.parse(cartStr);
 
-// Current product intialize
+// Current product intialization
 const currentProduct = {
   id: '',
   imgUrl: '',
@@ -28,6 +25,11 @@ const currentProduct = {
   unitPrice: '',
   qty: 1
 }
+
+// Get the product data passed from the All Products page
+
+let productRequest = new XMLHttpRequest();            // create the instance of XMLHttprequest
+const url = "http://localhost:3000/api/furniture/";   // create the URL string
 
 // Retieve the product ID > call the single product ID if one exists
 // Get one product data from the database from passed query selector
@@ -42,27 +44,26 @@ let id = newUrl.searchParams.get('id');
 function retrieveProduct() {
     return new Promise((resolve, reject) => {
       
-      productRequest.open('GET', url + id);       // open a GET api
+        productRequest.open('GET', url + id);       // open a GET api
       
-      productRequest.onreadystatechange = () => {
+        productRequest.onreadystatechange = () => {
 
-        if (productRequest.readyState === 4) {
+            if (productRequest.readyState === 4) {
           
-          if (productRequest.status === 200 || productRequest.status === 201) {
+                if (productRequest.status === 200 || productRequest.status === 201) {
 
-              resolve(JSON.parse(productRequest.response));    // retrieve the response if successful
-              
-          } else {
-              reject(JSON.parse(productRequest.response));
-          }
-          const objArray = JSON.parse(productRequest.response); 
+                    resolve(JSON.parse(productRequest.response));    // retrieve the response if successful
+                } else {
+                    reject(JSON.parse(productRequest.response));
+                }
+                
+                const objArray = JSON.parse(productRequest.response); 
                            
-          createCard(objArray);          
+                createCard(objArray);          
+            };
         };
-      };
-      productRequest.send();
-    });
-   
+        productRequest.send();
+    });   
 };
 
 retrieveProduct();
@@ -72,7 +73,7 @@ retrieveProduct();
 // Add picture, title, description, price, pulldown customize menu, & add to cart button
 
 function createCard(cardObj) {
-    // console.log(cardObj);
+    
     const main = document.getElementById('product');
     const card = document.createElement('div');
     const image = document.createElement('img'); 
@@ -82,30 +83,31 @@ function createCard(cardObj) {
     const cart = document.createElement('button');
     const label = document.createElement('h4');
       
-    card.classList.add("card");
-    card.classList.add("col");
-    image.classList.add("card-img-top");
-    image.setAttribute("src", cardObj.imageUrl);
-    image.setAttribute("alt", 'furniture image');
-    cart.classList.add("btn");
-    cart.classList.add("btn-primary");
-    cart.classList.add("btn-lg");
-    cart.classList.add("btn-inline");
-    cart.classList.add("m-4");
-    description.classList.add("text-center");
+    card.classList.add('card', 'col');
+    
+    image.classList.add('card-img-top');
+    image.setAttribute('src', cardObj.imageUrl);
+    image.setAttribute('alt', 'furniture image');
+
+    cart.classList.add('btn', 'btn-primary', 'btn-lg', 'btn-inline', 'm-4');
+    cart.innerText = 'Add to Cart';
+    
+    description.classList.add('text-center');
     description.classList.add('p-1');
+    description.innerText = cardObj.description;
+
     price.classList.add('text-center');
     price.classList.add('p-2');
+
     label.classList.add('text-left');
-    
-    cart.innerText = 'Add to Cart';
-    description.innerText = cardObj.description;
+    label.innerHTML = "Choice of Varnish:";
+        
     let priceFmt =  (cardObj.price / 100);
-    price.innerText = ('$' +  priceFmt.toFixed(2)); 
+    price.innerText = ('$' +  priceFmt.toFixed(2));
+
     name.classList.add('text-center');
     name.innerText = cardObj.name;
-    label.innerHTML = "Choice of Varnish:";
-    
+        
     cart.addEventListener('click', () => {
       addToCart(currentProduct);
     });
@@ -123,36 +125,34 @@ function createCard(cardObj) {
     currentProduct.imgUrl = cardObj.imageUrl;
     currentProduct.name = cardObj.name;
     currentProduct.unitPrice = cardObj.price;
-    // currentProduct.qty = cardObj.qty;
-        
-  };
+           
+};
 
 //------------------------------------------------------
 // Build pulldown menu for varnish customization function
 
 function createPulldown(array) {
-  const pulldown = document.createElement('select');
-  const length = array.length;
+    const pulldown = document.createElement('select');
+    const length = array.length;
     
-  for(let i = 0; i < length; i++) {
-    const option = document.createElement('option');
-    option.setAttribute('value', array[i]);
-    if (i === 0) {
-     currentProduct.varnish = array[i];
+    for(let i = 0; i < length; i++) {
+        const option = document.createElement('option');
+        option.setAttribute('value', array[i]);
+        if (i === 0) {
+            currentProduct.varnish = array[i];
+        }
+        option.innerText = array[i];
+        pulldown.appendChild(option);
     }
-    option.innerText = array[i];
- 
-    pulldown.appendChild(option);
-  }
 
-  //----------------------------------------- 
-  // Event listener for varnish choice change
+    //----------------------------------------- 
+    // Event listener for varnish choice change
 
-  pulldown.addEventListener( 'change', (ev) => {
-    currentProduct.varnish = ev.target.value;
-  });   
+    pulldown.addEventListener( 'change', (ev) => {
+        currentProduct.varnish = ev.target.value;
+    });   
 
-  return pulldown;
+    return pulldown;
 }
 
 //-------------------------------------------------
@@ -160,29 +160,28 @@ function createPulldown(array) {
 
 function addToCart(item) {
   
-  let doPush = true;
+    let doPush = true;
   
-  for (let i = 0; i < cartArray.length; i++) {
+    for (let i = 0; i < cartArray.length; i++) {
             
-    if (currentProduct.id === cartArray[i].id &&
-      currentProduct.varnish === cartArray[i].varnish) {
-      doPush = false;      
-    };
+        if (currentProduct.id === cartArray[i].id &&
+        currentProduct.varnish === cartArray[i].varnish) {
+            doPush = false;      
+        };
 
-  };
+    };
     
-  if (doPush) {  
-    cartArray.push(currentProduct);
-    syncCart();
-    alert('Product added to shopping cart!');
+    if (doPush) {  
+        cartArray.push(currentProduct);
+        syncCart();
+        alert('Product added to shopping cart!');
     
-    updateCartQty();
-  } else {
-    alert('Product already exists in shopping cart! If you want another of this item, you can increase the quantity when you go to the shopping cart.');
-  };
+        updateCartQty();
+    } else {
+        alert('Product already exists in shopping cart! If you want another of this item, you can increase the quantity when you go to the shopping cart.');
+    };
   
 };  
-//end of add to cart function
 
 //--------------------------------------------------
 // Sync up the cart array and local storage function
@@ -190,28 +189,28 @@ function addToCart(item) {
 function syncCart() {
   localStorage.setItem('cart', JSON.stringify(cartArray)); 
   cartArray = JSON.parse(localStorage.getItem('cart'));
-}
+};
 
 //------------------------------
 // Update Cart Quantity function
 
 function updateCartQty() {
 
-  // Initialize quantity in local storage
-  let totalQty = 0
+    // Initialize quantity
+    let totalQty = 0
   
-  const cartIcon = document.getElementsByClassName("cart-qty")[0];
-  const storage = JSON.parse(localStorage.getItem('cart'));
+    const cartIcon = document.getElementsByClassName("cart-qty")[0];
+    const storage = JSON.parse(localStorage.getItem('cart'));
 
-  if (storage === [] || storage === null) {
-      totalQty = 0;
+    if (storage === [] || storage === null) {
+        totalQty = 0;
       
-  } else {
-      for (let i=0; i<storage.length; i++) {
-        totalQty = totalQty + parseInt(storage[i].qty)
-      }
-  }
+    } else {
+        for (let i=0; i<storage.length; i++) {
+            totalQty = totalQty + parseInt(storage[i].qty)
+        }
+    }
 
-  localStorage.setItem('qty', JSON.stringify(totalQty));
-  cartIcon.innerText = totalQty;
-}
+    localStorage.setItem('qty', JSON.stringify(totalQty));
+    cartIcon.innerText = totalQty;
+};

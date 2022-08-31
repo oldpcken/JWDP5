@@ -1,7 +1,6 @@
 // JS for Confirmation Page
 
 let total = 0;
-let cust = '';
 
 // Retrieve shopping cart data from localStorage
 
@@ -12,9 +11,8 @@ if (cartArray.length === 0) {
 
 //grab the name from localstorage for the confirmation msg
 
+let cust = '';
 let customer = JSON.parse(localStorage.getItem('cust'));
-console.log('name is ', cust);
-
 
 // Grab the total price for the order
 
@@ -25,17 +23,10 @@ updateGrandTotal();
 const confirmation = document.getElementById('confirm');
 
 let url1 = window.location.href;
-// console.log('url1 is ', url1);
-
 let newUrl = new URL(url1);
-// console.log('newUrl is ', newUrl);
-
 let conf = newUrl.searchParams.get('conf');
-// console.log('conf is ', conf);
 
-// confirmation.setAttribute('align-content', 'center')
 confirmation.classList.add('h4', 'text-success', 'text-center');
-
 confirmation.innerHTML = '<br/>' + customer + ', thank you for your order! <br/><br/>'; 
 confirmation.innerHTML += 'The total price is $' + (total/100).toFixed(2) + '<br/><br/>'; 
 confirmation.innerHTML += 'Your order number is ' + conf + '<br/><br/>';
@@ -53,20 +44,12 @@ updateCartQty();
 // Update the grand total of the order Function
 
 function updateGrandTotal() {
-  // console.log(cartArray);
-
-   //Cycle thru cart data to calculate the grand total
-
-  for (let i=0; i < cartArray.length; i++) {
-      //Multiply each unit price by the quantity of item
-      total = total + cartArray[i].unitPrice * cartArray[i].qty;
-
-      // console.log(cartArray[i].unitPrice);
-  }
-  //grab html ID to append grand total data to
-  // const orderTotal = document.getElementById('grandtotal');
-  //format grand total $ & 2 decimal places - value put in DOM
-  // orderTotal.innerText = '$' + (total/100).toFixed(2);
+    
+    for (let i=0; i < cartArray.length; i++) {
+        
+        total = total + cartArray[i].unitPrice * cartArray[i].qty;
+      
+    }
   
 }
 
@@ -74,6 +57,7 @@ function updateGrandTotal() {
 // Update Cart Quantity function
 
 function updateCartQty() {
+
     let totalQty = 0
      
     const cartIcon = document.getElementsByClassName("cart-qty")[0];
@@ -84,11 +68,11 @@ function updateCartQty() {
         
     } else {
         for (let i=0; i<storage.length; i++) {
-          totalQty = totalQty + parseInt(storage[i].qty)
+        totalQty = totalQty + parseInt(storage[i].qty)
         }
     }
   
     localStorage.setItem('qty', JSON.stringify(totalQty));
     cartIcon.innerText = totalQty;
      
-  }
+}

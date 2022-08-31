@@ -28,11 +28,6 @@
     white-space: nowrap;
 }
 
-.test {
-    outline: 10px solid blue;
-    margin-left: 50px;
-}
-
 form {
     margin: 0 auto;
     width: 550px;
@@ -66,8 +61,4 @@ form input{
 
 .clr {
     background-color: red;
-}
-
-.cool {
-    background-color: lightblue;
 }

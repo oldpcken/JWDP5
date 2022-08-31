@@ -1,9 +1,10 @@
+// JS for Shopping cart page
+
 //Update the shopping cart quantity
 
 updateCartQty();
 
-//--------------------------------------------
-// Create a makeOrder() function to send data to the confirmation page
+// Grab html ID to attach the shopping cart to
 
 const subOrder = document.getElementById('order');
 
@@ -16,19 +17,18 @@ if (cartArray.length === 0) {
 }
 let cartItems = cartArray.length;
 
-console.log(cartArray);
+// Get and create elements for the cart
 
-//Get and create elements for the cart
 const main = document.getElementById('shoppingcart');
 const cartHeader = document.createElement('h4');
 const cartHeader2 = document.createElement('h5');
-main.classList.add('text-center')
+
 cartHeader.innerText = 'Your Shopping Cart';
+main.classList.add('text-center');
+
 main.appendChild(cartHeader);
 
 cartHeader2.classList.add('col-12', 'py-3');
-// cartHeader2.setAttribute('display', 'flex');
-// cartHeader2.setAttribute('align-items', 'stretch');
 cartHeader2.innerText = 'Selection   -   Varnish   -   Price   -   Quantity   -   Total   -   Remove';
 
 main.appendChild(cartHeader2);
@@ -47,9 +47,6 @@ function displayCart() {
     for ( let i = 0 ; i < cartItems ; i++ ) {
     
         //create elements to be added to DOM
-
-        //****add more divs to make cartline responsive!!!
-        
         const cartLine = document.createElement('div');
         const imageThumb = document.createElement('img'); 
         const name = document.createElement('div');
@@ -71,7 +68,6 @@ function displayCart() {
         imageThumb.classList.add('py-1');
 
         name.classList.add('px-1', 'pt-2', 'col-3', 'col-sm-2');
-        // name.setAttribute('minWidth', 90)
         name.innerText = cartArray[i].name;
 
         finish.classList.add('px-1', 'pt-2', 'col-3', 'col-sm-2');
@@ -83,7 +79,6 @@ function displayCart() {
         price.innerText = ('$' +  priceFmt.toFixed(2));
 
         itemNum.classList.add('pt-1', 'col-3', 'col-sm-2');
-        // itemNum.setAttribute('width', 80);
         itemNum.innerHTML = `<input class="form-control" type="number"  style='min-width: 65px' size="2" value=${cartArray[i].qty} min="1" max="99">`;
 
         total.classList.add('px-1', 'pt-2', 'col-3', 'col-sm-2');
@@ -112,7 +107,7 @@ function displayCart() {
             syncCart();          // match up cart array & local storage
             updateGrandTotal();  // Calculate new total for whole page
             updateCartQty();     // Calculate new quantity in cart
-        } )
+        });
         
         //Caclulate line total and format it for display
         let pageLoadTotal = cartArray[i].qty * parseInt(cartArray[i].unitPrice / 100);
@@ -149,29 +144,20 @@ function syncCart() {
 
 function delCartLine(ev) {
 
-  console.log(ev);
-  // ev.target.parentNode.classList.add('cool');
-
   // get the product ID
   const id = ev.target.parentNode.dataset.id;
   // get the product finish
   const finish = ev.target.parentNode.dataset.finish;
-
-  console.log(id); 
-   
+  
   //use findindex() method to retrieve the index of the product to be deleted
   let index = cartArray.findIndex(o => o.id === id && o.varnish === finish);
-
-  console.log(index);
 
   //use the splice() method to remove the selected cartline from the array
   cartArray.splice(index,1);
   if (cartArray.length===0) {
     subOrder.setAttribute('disabled', '');
   }
-
-  console.log(cartArray);
-
+ 
   //use the remove method to remove the selected cartline from the DOM
   ev.target.parentNode.remove();
 
@@ -185,8 +171,7 @@ function delCartLine(ev) {
 // Update the grand total of the order Function
 
 function updateGrandTotal() {
-    // console.log(cartArray);
-
+   
     //initalize variable
     let total = 0;
     //Cycle thru cart data to calculate the grand total
@@ -195,7 +180,7 @@ function updateGrandTotal() {
         //Multiply each unit price by the quantity of item
         total = total + cartArray[i].unitPrice * cartArray[i].qty;
 
-        // console.log(cartArray[i].unitPrice);
+        
     }
     //grab html ID to append grand total data to
     const orderTotal = document.getElementById('grandtotal');
@@ -212,7 +197,6 @@ function totatPrice() {
     total.innerText = '$' + ((cartArray[i].unitPrice / 100).toFixed(2) * e.target.value);
 };
 
-//--------------------------------------------
 //RegEx for input field validation
 
 const fNameRegex = /^[A-Za-z ]{2,32}$/;
@@ -223,7 +207,6 @@ const stateRegex = /^[A-Za-z ]{2,2}$/;
 const zipRegex = /^[0-9 ]{5,5}$/;
 const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-//--------------------------------------------
 // Form Validation
 
 let firstNameIsValid = false;
@@ -245,131 +228,91 @@ const state = document.getElementById('state');
 const zip = document.getElementById('zipcode');
 const email = document.getElementById('email');
 
-// let fNameErrorMsg;
-
-// fName.addEventListener('keyup', () => {
-    
-//     if (fNameRegex.test(fName.value)) {
-//         console.log(fName.value);
-//         fName.style.border = 'solid green';
-//         firstNameIsValid = true;
-//     } else {
-//         fName.style.border = 'solid red';
-//         firstNameIsValid = false;
-//     }
-//     console.log(firstNameIsValid);
-// });
 // first name test
 fName.addEventListener('keyup', () => {
     
     if (fNameRegex.test(fName.value)) {
-        console.log(fName.value);
         fName.style.border = 'solid green';
         firstNameIsValid = true;
     } else {
         fName.style.border = 'solid red';
         firstNameIsValid = false;
-    }
-    console.log(firstNameIsValid);
+    }    
 });
 // last name test
 lName.addEventListener('keyup', () => {
     
     if (lNameRegex.test(lName.value)) {
-        console.log(lName.value);
         lName.style.border = 'solid green';
         lastNameIsValid = true;
     } else {
         lName.style.border = 'solid red';
         lastNameIsValid = false;
-    }
-    console.log(lastNameIsValid);
+    }    
 });
 // address test
 address.addEventListener('keyup', () => {
     
     if (addressRegex.test(address.value)) {
-        console.log(address.value);
         address.style.border = 'solid green';
         addressIsValid = true;
     } else {
         address.style.border = 'solid red';
         addressIsValid = false;
-    }
-    console.log(addressIsValid);
+    }   
 });
 //city test
 city.addEventListener('keyup', () => {
     
     if (cityRegex.test(city.value)) {
-        console.log(city.value);
         city.style.border = 'solid green';
         cityIsValid = true;
     } else {
         city.style.border = 'solid red';
         cityIsValid = false;
-    }
-    console.log(cityIsValid);
+    }    
 });
 //state test
 state.addEventListener('keyup', () => {
     
     if (stateRegex.test(state.value)) {
-        console.log(state.value);
         state.style.border = 'solid green';
         stateIsValid = true;
     } else {
         state.style.border = 'solid red';
         stateIsValid = false;
-    }
-    console.log(stateIsValid);
+    }    
 });
 //zipcode test
 zip.addEventListener('keyup', () => {
     
     if (zipRegex.test(zip.value)) {
-        console.log(zip.value);
         zip.style.border = 'solid green';
         zipcodeIsValid = true;
     } else {
         zip.style.border = 'solid red';
         zipcodeIsValid = false;
-    }
-    console.log(zipcodeIsValid);
+    }    
 });
 //email test
 email.addEventListener('keyup', () => {
     
     if (emailRegex.test(email.value)) {
-        console.log(email.value);
-        email.style.border = 'solid green';
+       email.style.border = 'solid green';
         emailIsValid = true;
     } else {
         email.style.border = 'solid red';
         emailIsValid = false;
-    }
-    console.log(emailIsValid);
+    }   
 });
-
-// email.addEventListener('keyup', () => {
-//   if (firstNameIsValid === true && lastNameIsValid === true && addressIsValid === true && cityIsValid === true && stateIsValid === true && zipcodeIsValid === true && emailIsValid === true) {
-//       // document.getElementById('order').disabled = false;
-      
-//   } else {
-//       console.log('All fields must not be valid!!')
-//   }
-// });
 
 //variable for the full name for the confirmation page
 let fullName = '';
 let cust = '';
 
-// //--------------------------------------------
-// // Create a makeOrder() function to send data to the confirmation page
+// Make the order to send data to the confirmation page
 
-// const subOrder = document.getElementById('order');
-
-//--------------------------------------------
+//-----------------------------------------
 // Event Listener for the Make Order Button
 
 subOrder.addEventListener('click', (ev) => {
@@ -390,48 +333,39 @@ subOrder.addEventListener('click', (ev) => {
       getFormData(order);
 
       localStorage.setItem('cust', JSON.stringify(fullName));
-      console.log('cust is ', cust);
-
+      
       getOrderData(order);
 
       ev.preventDefault();
       let productOrder = new XMLHttpRequest();            // create the instance of XMLHttprequest
-      const url = "http://localhost:3000/api/furniture";   // create the URL string
+      const url = "http://localhost:3000/api/furniture";  // create the URL string
 
       return new Promise((resolve, reject) => {
       
-        productOrder.open('POST', url + "/order");             // open a POST api
+        productOrder.open('POST', url + "/order");        // open a POST api
         
         productOrder.onreadystatechange = () => {
-          if (productOrder.readyState === 4) {
-            if (productOrder.status === 200 || productOrder.status === 201) {
-
-                console.log('product order status is ', productOrder.status)
-
-                resolve(JSON.parse(productOrder.response));    // retrieve the response if successful
-                
-                console.log('The product order response is ', productOrder.response);
-            } else {
-                reject(JSON.parse(productOrder.response));
-
-                console.log('The rejected product order response is ', productOrder.response);
-            }
-            const objOrdArray = JSON.parse(productOrder.response);   
             
-            // console.log('The JSON parsed response is ', objOrdArray);
-            location.href='confirmation.html' + '?conf=' + objOrdArray.orderId;
-          };
-        
+            if (productOrder.readyState === 4) {
+            
+                if (productOrder.status === 200 || productOrder.status === 201) {
+                    resolve(JSON.parse(productOrder.response));    // retrieve the response if successful
+                } else {
+                    reject(JSON.parse(productOrder.response));
+                }
+                
+                const objOrdArray = JSON.parse(productOrder.response);   
+                location.href='confirmation.html' + '?conf=' + objOrdArray.orderId;
+            };        
         };
         
-      body = JSON.stringify(order);
-      productOrder.setRequestHeader("Content-Type", "application/json");
-      productOrder.send(body);
-      console.log('order is', order);
-
-    });
+        body = JSON.stringify(order);
+        productOrder.setRequestHeader("Content-Type", "application/json");
+        productOrder.send(body);
+      
+      });
     } else {
-        alert("Go back to fill out the form!");
+        alert("Please finish filling out the form!");
     }
 });
 
@@ -442,26 +376,23 @@ function getFormData(order) {
     order.contact.firstName = document.getElementById('firstName').value;
     order.contact.lastName = document.getElementById('lastName').value;
     fullName = (order.contact.firstName + ' ' + order.contact.lastName);
-    console.log('fullName is ', fullName);
-
+   
     order.contact.address = document.getElementById('address').value;
     order.contact.city = document.getElementById('city').value;
     order.contact.state = document.getElementById('state').value;
     order.contact.zipcode = document.getElementById('zipcode').value;
-    order.contact.email = document.getElementById('email').value;
-
-    console.log('Get Form Data');    
+    order.contact.email = document.getElementById('email').value;     
 }
 
 //------------------------------------------
 // Retrieve order data for the post function
 
 function getOrderData(array) {
-    //    - gather cart data (as an array?) to be passed to confirmation page
+    
+    // Gather cart data (as an array?) to be passed to confirmation page
     for (let i=0; i < cartArray.length; i++) {
         array.products.push(cartArray[i].id)        
-    }
-    console.log(array.products);
+    }    
 }
 
 //------------------------------
@@ -469,28 +400,23 @@ function getOrderData(array) {
 
 function updateCartQty() {
 
-    // Initialize quantity in local storage
+    // Initialize quantity
     let totalQty = 0
   
     //this will calculate the # of items appearing in the cart
-    // console.log('The Update Cart Quantity Function is Engaged!')
-  
+      
     const cartIcon = document.getElementsByClassName("cart-qty")[0];
     const storage = JSON.parse(localStorage.getItem('cart'));
-    // console.log(cartIcon);
+    
     if (storage === [] || storage === null) {
-        totalQty = 0;
-        
+        totalQty = 0;        
     } else {
         for (let i=0; i<storage.length; i++) {
-          totalQty = totalQty + parseInt(storage[i].qty)
+            totalQty = totalQty + parseInt(storage[i].qty)
         }
-    }
+    };
   
     localStorage.setItem('qty', JSON.stringify(totalQty));
-    cartIcon.innerText = totalQty;
-    
-    console.log('total quantity is', totalQty);
+    cartIcon.innerText = totalQty;       
   
-  }
-
+  };
