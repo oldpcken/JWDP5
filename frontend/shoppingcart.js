@@ -352,10 +352,13 @@ subOrder.addEventListener('click', (ev) => {
                     resolve(JSON.parse(productOrder.response));    // retrieve the response if successful
                 } else {
                     reject(JSON.parse(productOrder.response));
+                    alert('The server may be unavailable, please try again later!')
                 }
                 
                 const objOrdArray = JSON.parse(productOrder.response);   
                 location.href='confirmation.html' + '?conf=' + objOrdArray.orderId;
+            } else {
+                alert('The server may be unavailable, please try again later!')
             };        
         };
         

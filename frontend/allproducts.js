@@ -24,14 +24,14 @@ function retrieveProducts() {
         productRequest.open('GET', url);             // open a GET api
     
         productRequest.onreadystatechange = () => {
+            
             if (productRequest.readyState === 4) {
                 
                 if (productRequest.status === 200 || productRequest.status === 201) {
 
                     resolve(JSON.parse(productRequest.response));   // retrieve the response if successful
                 } else {
-                    reject(JSON.parse(productRequest.response));
-                    alert('The products failed to be retrieved from the database!');
+                    reject(JSON.parse(productRequest.response));                   
                 }
             
                 const objArray = JSON.parse(productRequest.response); 
@@ -41,7 +41,9 @@ function retrieveProducts() {
                 for (let i = 0; i < objArray.length; i++) {
                     createCard(objArray[i]);
                 }       
-              }
+            } else {
+                alert('The products failed to be retrieved from the database!');
+            }
         };
         productRequest.send();
     });

@@ -54,12 +54,14 @@ function retrieveProduct() {
 
                     resolve(JSON.parse(productRequest.response));    // retrieve the response if successful
                 } else {
-                    reject(JSON.parse(productRequest.response));
+                    reject(JSON.parse(productRequest.response));                    
                 }
                 
                 const objArray = JSON.parse(productRequest.response); 
                            
                 createCard(objArray);          
+            } else {
+                alert('The server may be unavailable, please try again later!')
             };
         };
         productRequest.send();
