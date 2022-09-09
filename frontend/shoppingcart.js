@@ -357,8 +357,7 @@ subOrder.addEventListener('click', (ev) => {
                 
                 const objOrdArray = JSON.parse(productOrder.response);   
                 location.href='confirmation.html' + '?conf=' + objOrdArray.orderId;
-            } else {
-                alert('The server may be unavailable, please try again later!')
+            
             };        
         };
         

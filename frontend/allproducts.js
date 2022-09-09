@@ -41,9 +41,7 @@ function retrieveProducts() {
                 for (let i = 0; i < objArray.length; i++) {
                     createCard(objArray[i]);
                 }       
-            } else {
-                alert('The products failed to be retrieved from the database!');
-            }
+            };
         };
         productRequest.send();
     });

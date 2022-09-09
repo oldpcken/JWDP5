@@ -60,8 +60,6 @@ function retrieveProduct() {
                 const objArray = JSON.parse(productRequest.response); 
                            
                 createCard(objArray);          
-            } else {
-                alert('The server may be unavailable, please try again later!')
             };
         };
         productRequest.send();
